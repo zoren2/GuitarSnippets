@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 # GuitarSnippets
-=======
-"# GuitarSnippets" 
->>>>>>> main
 
 Javascript based tool to render Snippets (pieces of music scores) and serving it to the user for the purposes of spaced repetition learning. 
 
