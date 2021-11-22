@@ -1,0 +1,51 @@
+<html>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<head>
+	<title> Small Demo Usage </title>
+</head>
+<body>
+
+<script src="opensheetmusicdisplay.min.js"></script>
+
+<p>Simply select a MusicXML file from the resources folder.</p> 
+<div id="osmdCanvas" style="width: 100%"/>
+
+<input type="file" id="fileInput" name="file" formenctype="application/zip"/>
+
+<script>
+  var osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay("osmdCanvas");
+  osmd.TransposeCalculator = new opensheetmusicdisplay.TransposeCalculator(); // needs OSMD 1.0.0+
+  
+  function handleFileSelect(evt) {
+    var file = evt.target.files[0];
+
+    if (!file.name.match('.*\.xml') && !file.name.match('.*\.musicxml') && !file.name.match('.*\.mxl')) {
+      alert('You selected a non-xml file. Please select only music xml files.');
+      return;
+    }
+
+    var reader = new FileReader(); // Creates a new FileReader.
+    reader.onload = function(e) {
+      osmd.load(e.target.result).then(
+        function() {
+          //console.log("e.target.result: " + e.target.result);
+          // osmd.sheet.Transpose = 1;
+          osmd.render();
+        }
+      );
+    };
+    if (file.name.match('.*\.mxl')) {
+      // have to read as binary, otherwise JSZip will throw ("corrupted zip: missing 37 bytes" or similar)
+      reader.readAsBinaryString(file);
+    } else {
+      reader.readAsText(file);
+    }
+  }
+
+  // Add event handler. Third parameter is the useCapture parameter. It will then trigger the callback
+  // method handleFileSelect
+  document.getElementById("fileInput").addEventListener("change", handleFileSelect, false);
+</script>
+
+</body>
+</html>
